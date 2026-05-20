@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang='en'>
+
+<head>
+    <meta charset='UTF-8'>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+    <title>Document</title>
+</head>
+
+<body>
+    <div style='display: flex; width: fit-content; flex-direction: column;'>
+        <canvas id='canvas' width='1300' height='600' style='border: 2px red solid;'></canvas>
+        <div style="display: flex;">
+            <div style="display: flex; flex-direction: column;">
+                <h1>Controls</h1>
+                <span>W and D to go left and right</span>
+                <span>Space to jump</span>
+                <span>E to interact</span>
+            </div>
+            <div id="reverseDiv" style="display: flex; margin-left: auto; margin-top: 4px;">
+                <div style="font-size: 20px; margin-right: 8px;">
+                    restartGame
+                </div>
+                <div id="restartGame" style="cursor: pointer; border: 2px solid gray;">
+                    <img src="images/restartButton.png">
+                </div>
+            </div>
+        </div>
+        <script type='module' src='script.js'></script>
+    </div>
+</body>
+
+</html>
