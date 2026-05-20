@@ -42,14 +42,14 @@ boxClose.src = "images/boxClose.png"
 let background_array = [background_one, background_two]
 let backgroundChoice = 0
 let player = {
-    playerAvatar: player_idle,
+    playerAvatar: player_idle, // i had plans to make animation but i have decided not to.
     playerX: 200,
     playerY: 215,
 
 }
 
 function enterHome() {
-    if( ( (player.playerX == 2) )) return;
+    if( ( (player.playerX == 2) ) && backgroundChoice != 1) return;
     backgroundChoice = 2
     console.log("home entye")
 }
@@ -81,7 +81,7 @@ function movePlayer(deltaTime) {
     if(playerA) player.playerX -= 400 * deltaTime
     if(playerD) player.playerX += 400 * deltaTime
     if(playerJump && player.playerY == 215) {
-        verticalChangingSpeed = 700;
+        verticalChangingSpeed = 400;
         player.playerY = 214.999
     }
     verticalChangingSpeed *= Math.pow(1 - 0.97, deltaTime)
