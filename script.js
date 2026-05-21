@@ -9,7 +9,6 @@ let input = new Input(canvas)
 
 let restart = document.getElementById("restartGame")
 let verticalChangingSpeed;
-let gameFinished = 0
 
 let player_idle = new Image()
 player_idle.src = "./images/player/player_idle.png"
@@ -45,11 +44,9 @@ let player = {
     playerAvatar: player_idle, // i had plans to make animation but i have decided not to.
     playerX: 200,
     playerY: 215,
-
 }
 
 function enterHome() {
-    if( ( (player.playerX == 2) ) && backgroundChoice != 1) return;
     backgroundChoice = 2
     console.log("home entye")
 }
@@ -66,7 +63,7 @@ function updateKeys() {
         playerJump = input.getKey(Keys.Space)
         playerA = input.getKey(Keys.A)
         playerD = input.getKey(Keys.D)
-        playerE = input.getKey(Keys.E)
+        playerE = input.getKeyDown(Keys.E)
     } catch (error) {
         throw new Error(error)
     }
@@ -75,7 +72,7 @@ function updateKeys() {
 
 
 function movePlayer(deltaTime) {
-    console.log(player.playerY)
+    console.log(player.playerX)
     if(backgroundChoice == 2) return
     if(leftClick) console.log(input.mousePosition.x);
     if(playerA) player.playerX -= 400 * deltaTime
@@ -96,12 +93,12 @@ function movePlayer(deltaTime) {
 
     }
 
-    if(playerE) enterHome();
+    if(playerE) interact();
     
-    if(backgroundChoice == 0 && player.playerX <= 110) {
-        player.playerX = 110
+    if(backgroundChoice == 0 && player.playerX <= 30) {
+        player.playerX = 30
     }
-    if(backgroundChoice == 1 && player.playerX <= 110) {
+    if(backgroundChoice == 1 && player.playerX <= 50) {
         backgroundChoice = 0
         player.playerX = canvas.width - 111
     }
@@ -110,7 +107,7 @@ function movePlayer(deltaTime) {
     }
     if(backgroundChoice == 0 && player.playerX >= canvas.width-110) {
         backgroundChoice = 1
-        player.playerX = 110
+        player.playerX = 51
     }
 }
 let lastTime = performance.now();
@@ -141,15 +138,20 @@ function renderText() {
             CTX.drawImage(text_one, 50, 50)
             break
         case 1:
-        
-        default: 
-
+            CTX.drawImage(text_two, 50, 50)
+            break;
     }
 }
 
 function renderInteract() {
-    if(true)
+    if(
+        (player.playerX >= 100 && player.playerX <= 250 && backgroundChoice == 0) ||
+        (player.playerX >= 500 && player.playerX <= 650 && backgroundChoice == 0) ||
+        (player.playerX >= 350 && player.playerX <= 500 && backgroundChoice == 1) ||
+        (player.playerX >= 875 && player.playerX <= 1000 && backgroundChoice == 1) 
+    ) {
         CTX.drawImage(interactPopup, player.playerX-player.playerAvatar.width+15, player.playerY-100)
+    }
 }
 
 function renderChests() {
@@ -158,15 +160,39 @@ function renderChests() {
             CTX.drawImage(boxClose, 200, 215+player_idle.height-boxClose.height+50, 100, 100)
         }
         else {
-            CTX.drawImage(boxOpen, 300, 300)
+            CTX.drawImage(boxOpen, 200, 215+player_idle.height-boxClose.height+50, 100, 100)
         }
         if(isChestTwoOpen == 0) {
-            CTX.drawImage(boxClose, 400, 300)
+            CTX.drawImage(boxClose, 600, 215+player_idle.height-boxClose.height+50, 100, 100)
         }
         else {
-            CTX.drawImage(boxOpen,500,300)
+            CTX.drawImage(boxOpen, 600, 215+player_idle.height-boxClose.height+50, 100, 100)
         }
         return
+    }
+    if(isChestThreeOpen == 0) {
+        CTX.drawImage(boxClose, 450, 215+player_idle.height-boxClose.height+50, 100 ,100)
+        
+        return
+    }
+    CTX.drawImage(boxOpen, 450, 215+player_idle.height-boxClose.height+50, 100 ,100)
+}
+
+function interact() {
+    if(player.playerX >= 100 && player.playerX <= 300 && backgroundChoice == 0) {
+        isChestOneOpen++
+        isChestOneOpen = isChestOneOpen%2
+    }
+    if(player.playerX >= 500 && player.playerX <= 650 && backgroundChoice == 0) {
+        isChestTwoOpen++
+        isChestTwoOpen = isChestTwoOpen%2
+    }
+    if(player.playerX >= 350 && player.playerX <= 500 && backgroundChoice == 1) {
+        isChestThreeOpen++
+        isChestThreeOpen = isChestThreeOpen%2
+    }
+    if(player.playerX >= 875 && player.playerX <= 1000 && backgroundChoice == 1) {
+        enterHome();
     }
 }
 
@@ -186,7 +212,7 @@ function render() {
 
 
 restart.addEventListener("click", () => {
-    gameFinished = 0
+    
     backgroundChoice = 0
     player.playerX = 200
 })
