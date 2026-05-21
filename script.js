@@ -116,6 +116,7 @@ gameLoop(performance.now());
 function gameLoop(currentTime) {
     const deltaTime = (currentTime - lastTime) / 1000; // sekunder
     lastTime = currentTime;
+    if(backgroundChoice == 2) return;
     update(deltaTime); // uppdatera objekt
     render(); // rita objekt på canvas
     requestAnimationFrame(gameLoop);
